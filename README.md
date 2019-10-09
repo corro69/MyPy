@@ -2,7 +2,7 @@
 for Windows PC: locate the Dodge.exe file. Either execute the file from it's location or right click, send to desktop (creates a shortcut)
 
 This is a work in progress. Any feedback is appreciated.
-email: dbrooks2007@linuxmail.org
+email: dbrooks@linuxmail.org
 
 keyboard controls:
 p = play/pause
