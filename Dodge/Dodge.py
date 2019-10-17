@@ -6,8 +6,8 @@ def game_loop():
 pygame.init()
 
 
-display_width = 800
-display_height = 800
+display_width = 1000
+display_height = 600
 
 HW,HH = display_width / 2, display_height / 2
 AREA = display_width * display_height
@@ -28,8 +28,13 @@ pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 pygame.font.init()
 
+joysticks = []
+for i in range(0, pygame.joystick.get_count()):
+    joysticks.append(pygame.joystick.Joystick(i))
+    joysticks[-1].init()
+
 pygame.mixer.music.load("random silly chip song.wav")
-pygame.mixer.music.play(-1)
+#pygame.mixer.music.play(-1)
 
 class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, location):
@@ -84,9 +89,23 @@ def game_intro():
                 if event.key == pygame.K_p:
                     game_loop()
 
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 9:
+                    game_loop()
+
+            x_axis_pos = joysticks[-1].get_axis(0)
+                
+            if x_axis_pos < 0:
+                print ("left")
+                button(200,500,100,39,button1,button2, "play")
+                
+            if x_axis_pos > 0:
+                print("right")
+                button(700,500,100,39,quit1,quit2, "quit")
+
         gameDisplay.blit(bg.image, bg.rect)
 
-        gameDisplay.blit(kenny,(350, 350))
+        gameDisplay.blit(kenny,(425, 300))
 
         largeText = pygame.font.Font('SnackerComic.ttf',115)
         TextSurf, TextRect = text_objects("MyPy", largeText)
@@ -94,7 +113,7 @@ def game_intro():
         gameDisplay.blit(TextSurf, TextRect)
 
         button(200,500,100,39,button1,button2, "play")
-        button(500,500,100,39,quit1,quit2, "quit")
+        button(700,500,100,39,quit1,quit2, "quit")
 	
         pygame.display.update()
         clock.tick(15)

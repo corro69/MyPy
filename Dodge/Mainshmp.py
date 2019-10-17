@@ -3,8 +3,8 @@ import random
 import time
 import pickle
 
-WIDTH = 800
-HEIGHT = 700
+WIDTH = 1000
+HEIGHT = 600
 FPS =60
 
 BLACK = (0,0,0)
@@ -18,10 +18,19 @@ pygame.init()
 pygame.mixer.init()
 pygame.joystick.init()
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
+#screen = pygame.display.set_mode((WIDTH,HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("MyPy")
 icon = pygame.image.load("icon.png")
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
+
+joysticks = []
+for i in range(0, pygame.joystick.get_count()):
+    joysticks.append(pygame.joystick.Joystick(i))
+    joysticks[-1].init()
+print ("Detected Joystick '", joysticks[-1].get_name(),"'")
+
+
 
 #TopScore
 pickle_in = open("topscore.dat", "rb")
@@ -89,7 +98,7 @@ def draw_text(surf,text, size, x, y):
 def draw_topscore(surf,text, size, x, y):
     font = pygame.font.Font('Gretoon.ttf', 20)
     text = font.render("TopScore: " +str(topscore), True, RED)
-    surf.blit(text, (550,10))
+    surf.blit(text, (750,10))
 
 def draw_shield_bar(surf,x,y,pct):
     if pct <0:
@@ -147,15 +156,20 @@ def crash():
                 if event.key == pygame.K_p:
                    pause = False
                    game_loop()
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 9:
+                    pause = False
+                    game_loop()
         
-        screen.blit(kenny,(350, 350))
+        screen.blit(kenny,(425, 300))
         largeText = pygame.font.Font('SnackerComic.ttf',150)
         TextSurf, TextRect = text_objects("You're Dead!", largeText)
         TextRect.center = (WIDTH/2),(HEIGHT/3)
         screen.blit(TextSurf, TextRect)
 
         button(200,500,100,39,button1,button2, "play")
-        button(500,500,100,39,quit1,quit2, "quit")
+        button(700,500,100,39,quit1,quit2, "quit")
 
         pygame.display.update()
         clock.tick(15)
@@ -172,6 +186,7 @@ def button(x,y,w,h, b1, b2, action=None):
                 game_loop()
             if action == "unpause":
                 unpause()
+                pause = False
             elif action == "quit":
                 pygame.quit()
 
@@ -180,8 +195,12 @@ def button(x,y,w,h, b1, b2, action=None):
 def unpause():
     global pause
     pause = False
+
 def paused():
     pause = True
+
+
+    
 #PAUSE
     while pause:
         for event in pygame.event.get():
@@ -199,19 +218,26 @@ def paused():
             if event.type ==pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                    pause = False
-                   game_loop()
+                   unpause()
+            
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 9:
+                    pause = False
+                    unpause()
         
-        screen.blit(kenny,(350, 350))
+        screen.blit(kenny,(425, 300))
         largeText = pygame.font.Font('SnackerComic.ttf',115)
         TextSurf, TextRect = text_objects("PAUSED", largeText)
         TextRect.center = ((WIDTH/2),(HEIGHT/3))
         screen.blit(TextSurf, TextRect)
 
         button(200,500,100,39,button1,button2, "play")
-        button(500,500,100,39,quit1,quit2, "quit")
+        button(700,500,100,39,quit1,quit2, "quit")
       
         pygame.display.update()
         clock.tick(15)
+
+
 
 def game_loop():
     global pause
@@ -274,8 +300,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
         self.shield = 100
-    #    self.shoot_delay = 250
-    #   self.last_shot = pygame.time.get_ticks()
         self.lives = 3
         self.hidden = False
         self.hide_timer = pygame.time.get_ticks()
@@ -295,9 +319,22 @@ class Player(pygame.sprite.Sprite):
         if keystate[pygame.K_RIGHT]:
             self.speedx = 5
         if keystate[pygame.K_d]:
+            self.speedx = 5         
+
+        x_axis_pos = joysticks[-1].get_axis(0)
+        y_axis_pos = joysticks[-1].get_axis(1)
+        
+        if x_axis_pos < 0:
+            print ("left")
+            self.speedx = -5
+        if x_axis_pos > 0:
+            print("right")
             self.speedx = 5
-    #    if keystate[pygame.K_SPACE]:
-    #        self.shoot()
+        if y_axis_pos < 0:
+            print ("up")
+        if y_axis_pos > 0:
+            print("down") 
+
         self.rect.x += self.speedx
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
@@ -305,9 +342,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = 0
 
     def shoot(self):
-    #    now = pygame.time.get_ticks()
-    #    if now - self.last_shot > self.shoot_delay:
-    #        self.last_shot = now
         bullet = Bullet(self.rect.centerx, self.rect.top)
         all_sprites.add(bullet)
         bullets.add(bullet)
@@ -511,6 +545,22 @@ while running:
             if event.key == pygame.K_p:
                 pause = True
                 paused()
+        if event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 1:
+                player.shoot()
+        if event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 2:
+                player.shoot()
+        if event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 9:
+                pause = True
+                paused()
+
+         
+                
+        
+
+
                 
 #Update
     all_sprites.update()
