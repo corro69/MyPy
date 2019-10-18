@@ -93,16 +93,6 @@ def game_intro():
                 if event.button == 9:
                     game_loop()
 
-            x_axis_pos = joysticks[-1].get_axis(0)
-                
-            if x_axis_pos < 0:
-                print ("left")
-                button(200,500,100,39,button1,button2, "play")
-                
-            if x_axis_pos > 0:
-                print("right")
-                button(700,500,100,39,quit1,quit2, "quit")
-
         gameDisplay.blit(bg.image, bg.rect)
 
         gameDisplay.blit(kenny,(425, 300))
