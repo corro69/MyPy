@@ -321,19 +321,19 @@ class Player(pygame.sprite.Sprite):
         if keystate[pygame.K_d]:
             self.speedx = 5         
 
-        x_axis_pos = joysticks[-1].get_axis(0)
-        y_axis_pos = joysticks[-1].get_axis(1)
+ #       x_axis_pos = joysticks[-1].get_axis(0)
+ #       y_axis_pos = joysticks[-1].get_axis(1)
         
-        if x_axis_pos < 0:
-            print ("left")
-            self.speedx = -5
-        if x_axis_pos > 0:
-            print("right")
-            self.speedx = 5
-        if y_axis_pos < 0:
-            print ("up")
-        if y_axis_pos > 0:
-            print("down") 
+ #       if x_axis_pos < 0:
+ #           print ("left")
+ #           self.speedx = -5
+ #       if x_axis_pos > 0:
+ #           print("right")
+ #           self.speedx = 5
+ #       if y_axis_pos < 0:
+ #           print ("up")
+ #       if y_axis_pos > 0:
+ #           print("down") 
 
         self.rect.x += self.speedx
         if self.rect.right > WIDTH:
