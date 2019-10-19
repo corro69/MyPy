@@ -24,11 +24,11 @@ icon = pygame.image.load("icon.png")
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 
-joysticks = []
-for i in range(0, pygame.joystick.get_count()):
-    joysticks.append(pygame.joystick.Joystick(i))
-    joysticks[-1].init()
-print ("Detected Joystick '", joysticks[-1].get_name(),"'")
+#joysticks = []
+#for i in range(0, pygame.joystick.get_count()):
+#    joysticks.append(pygame.joystick.Joystick(i))
+#    joysticks[-1].init()
+#    print ("Detected Joystick '", joysticks[-1].get_name(),"'")
 
 
 
