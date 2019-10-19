@@ -12,10 +12,6 @@ left or "a" = left
 right or "d" = right
 spacebar = fire
 
-USB Gamepad controls:
-d-pad directional
-A and B buttons fire
-start button: start/pause/play
-select button: quit option when in paused menu
+
 
 Special thanks to Kenny for the use of his art/images.
