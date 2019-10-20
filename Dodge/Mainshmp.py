@@ -24,11 +24,11 @@ icon = pygame.image.load("icon.png")
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 
-#joysticks = []
-#for i in range(0, pygame.joystick.get_count()):
-#    joysticks.append(pygame.joystick.Joystick(i))
-#    joysticks[-1].init()
-#    print ("Detected Joystick '", joysticks[-1].get_name(),"'")
+joysticks = []
+for i in range(0, pygame.joystick.get_count()):
+    joysticks.append(pygame.joystick.Joystick(i))
+    joysticks[-1].init()
+    print ("Detected Joystick '", joysticks[-1].get_name(),"'")
 
 
 
@@ -319,21 +319,22 @@ class Player(pygame.sprite.Sprite):
         if keystate[pygame.K_RIGHT]:
             self.speedx = 5
         if keystate[pygame.K_d]:
-            self.speedx = 5         
+            self.speedx = 5      
+            
+        if pygame.joystick.get_count() >= 1:
+            x_axis_pos = joysticks[-1].get_axis(0)
+            y_axis_pos = joysticks[-1].get_axis(1)
 
- #       x_axis_pos = joysticks[-1].get_axis(0)
- #       y_axis_pos = joysticks[-1].get_axis(1)
-        
- #       if x_axis_pos < 0:
- #           print ("left")
- #           self.speedx = -5
- #       if x_axis_pos > 0:
- #           print("right")
- #           self.speedx = 5
- #       if y_axis_pos < 0:
- #           print ("up")
- #       if y_axis_pos > 0:
- #           print("down") 
+            if x_axis_pos < 0:
+                print ("left")
+                self.speedx = -5
+            if x_axis_pos > 0:
+                print("right")
+                self.speedx = 5
+            if y_axis_pos < 0:
+                print ("up")
+            if y_axis_pos > 0:
+                print("down") 
 
         self.rect.x += self.speedx
         if self.rect.right > WIDTH:
