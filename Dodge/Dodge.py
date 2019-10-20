@@ -28,10 +28,10 @@ pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 pygame.font.init()
 
-#joysticks = []
-#for i in range(0, pygame.joystick.get_count()):
-#    joysticks.append(pygame.joystick.Joystick(i))
-#    joysticks[-1].init()
+joysticks = []
+for i in range(0, pygame.joystick.get_count()):
+    joysticks.append(pygame.joystick.Joystick(i))
+    joysticks[-1].init()
 
 pygame.mixer.music.load("random silly chip song.wav")
 #pygame.mixer.music.play(-1)
