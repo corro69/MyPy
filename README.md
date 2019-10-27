@@ -13,9 +13,9 @@ right or "d" = right,
 spacebar = fire
 
 USB Gampad controls:
-d-pad = directional
-"A" & "B" buttons fire
-"start" = start/pause/play
-"select" = quit while in pause/start menu
+d-pad = directional,
+"A" & "B" buttons fire,
+"start" = start/pause/play,
+"select" = quit while in pause/start menu,
 
 Special thanks to Kenny for the use of his art/images.
