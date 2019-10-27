@@ -5,11 +5,11 @@ This is a work in progress. Any feedback is appreciated.
 email: dbrooks@linuxmail.org or dustin.brooks@massconceptz.com
 
 keyboard controls:
-p = play/pause
-q = quit
-esc = quit
-left or "a" = left
-right or "d" = right
+p = play/pause,
+q = quit,
+esc = quit,
+left or "a" = left,
+right or "d" = right,
 spacebar = fire
 
 USB Gampad controls:
