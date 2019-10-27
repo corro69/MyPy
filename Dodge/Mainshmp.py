@@ -30,8 +30,6 @@ for i in range(0, pygame.joystick.get_count()):
     joysticks[-1].init()
     print ("Detected Joystick '", joysticks[-1].get_name(),"'")
 
-
-
 #TopScore
 pickle_in = open("topscore.dat", "rb")
 topscore_save = pickle.load(pickle_in)
@@ -51,9 +49,11 @@ alien_img = pygame.image.load("spaceShip.png").convert_alpha()
 
 kenny = pygame.image.load("kenny.png")
 laser = pygame.image.load("beam.png")
-star_field = pygame.image.load("back1.png")
+star_field = pygame.image.load("back1.png").convert_alpha()
 powerUp_img = pygame.image.load("star1.png")
 oneUp_img = pygame.image.load("laserstar.png")
+hud_img = pygame.image.load("hud_p1Alt.png")
+lives_img = pygame.transform.scale(hud_img, (30, 30)).convert_alpha()
 
 asteroid_img = []
 asteroid_list = ["asteroid1.png", "asteroid2.png", "asteroid3.png", "asteroid4.png"]
@@ -134,7 +134,6 @@ def message_display(text):
 
     game_loop()
 
-
 #CRASH
 def crash():
     pause = True
@@ -161,7 +160,20 @@ def crash():
                 if event.button == 9:
                     pause = False
                     game_loop()
-        
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 8:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 7:
+                    pause = False
+                    game_loop()
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 6:
+                    pygame.quit()
+                    quit()
+
         screen.blit(kenny,(425, 300))
         largeText = pygame.font.Font('SnackerComic.ttf',150)
         TextSurf, TextRect = text_objects("You're Dead!", largeText)
@@ -198,8 +210,6 @@ def unpause():
 
 def paused():
     pause = True
-
-
     
 #PAUSE
     while pause:
@@ -224,7 +234,22 @@ def paused():
                 if event.button == 9:
                     pause = False
                     unpause()
-        
+             
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 8:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 6:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 7:
+                    pause = False
+                    unpause()
+
         screen.blit(kenny,(425, 300))
         largeText = pygame.font.Font('SnackerComic.ttf',115)
         TextSurf, TextRect = text_objects("PAUSED", largeText)
@@ -237,14 +262,10 @@ def paused():
         pygame.display.update()
         clock.tick(15)
 
-
-
 def game_loop():
     global pause
     pause = False
     
-    
-
 #BACKGROUND
 class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, location):
@@ -254,7 +275,7 @@ class Background(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = location
 bg = Background('background_image.png', [0,0])
 
-class star_field(pygame.sprite.Sprite):
+class Star_field(pygame.sprite.Sprite):
     def __init__(self,image_file, location):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("back1.png")
@@ -266,7 +287,7 @@ class star_field(pygame.sprite.Sprite):
         self.rect.y += self.speedy
         self.speedy = 2
 
-bg1 = star_field("star_field_image.png",[0,0])
+#bgX = Star_field()
 
 def new_asteroids():
     m = Asteroid()
@@ -319,12 +340,12 @@ class Player(pygame.sprite.Sprite):
         if keystate[pygame.K_RIGHT]:
             self.speedx = 5
         if keystate[pygame.K_d]:
-            self.speedx = 5      
-            
+            self.speedx = 5         
+
         if pygame.joystick.get_count() >= 1:
             x_axis_pos = joysticks[-1].get_axis(0)
-            y_axis_pos = joysticks[-1].get_axis(1)
-
+            y_axis_pos = joysticks[-1].get_axis(1)   
+            
             if x_axis_pos < 0:
                 print ("left")
                 self.speedx = -5
@@ -390,7 +411,6 @@ class Asteroid(pygame.sprite.Sprite):
             self.rect.y = random.randrange(-100, -40)
             self.speedy = random.randrange(1,8)
             
-
 #ALIEN
 class Alien(pygame.sprite.Sprite):
     def  __init__(self):
@@ -491,6 +511,7 @@ class OneUp(pygame.sprite.Sprite):
             self.speedy = random.randrange(1, 10)
 
 
+bgX = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 asteroids = pygame.sprite.Group()
 aliens = pygame.sprite.Group()
@@ -498,8 +519,8 @@ bullets = pygame.sprite.Group()
 powerUp = pygame.sprite.Group()  
 oneUp = pygame.sprite.Group()
 player = Player()
+all_sprites.add(bgX)
 all_sprites.add(player)
-
 
 for i in range(10):
     m = Asteroid()
@@ -529,7 +550,11 @@ while running:
     pickle_in = open("topscore.dat", "rb")
     topscore_save = pickle.load(pickle_in)
     topscore = topscore_save
-    
+
+#    bgX -= 1.4
+#    if bgX < bg.get_height() * -1:  
+#        bgX = bg.get_height()
+
 #process input (events)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -546,6 +571,7 @@ while running:
             if event.key == pygame.K_p:
                 pause = True
                 paused()
+
         if event.type == pygame.JOYBUTTONDOWN:
             if event.button == 1:
                 player.shoot()
@@ -557,12 +583,11 @@ while running:
                 pause = True
                 paused()
 
-         
-                
-        
-
-
-                
+        if event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 7:
+                pause = True
+                paused()
+                        
 #Update
     all_sprites.update()
 
@@ -622,9 +647,6 @@ while running:
         oneup_sound.play()
         new_oneUp()
 
-
-
-
 #check if bullets hit
     hits = pygame.sprite.groupcollide(asteroids, bullets, True, True)
     for hit in hits:
@@ -642,7 +664,6 @@ while running:
         all_sprites.add(expl)
         new_aliens()
 
-
 #score save
     if score > int(topscore):
         x = score
@@ -655,13 +676,12 @@ while running:
 #Draw/ render
     screen.fill(BLACK)
     screen.blit(bg.image, bg.rect)
-    screen.blit(bg1.image, bg.rect)
-    
+       
     all_sprites.draw(screen)
     draw_text(screen, str(score), 20, WIDTH, HEIGHT)
     draw_topscore(screen, str(topscore_save),20, 550, 10)
     draw_shield_bar(screen,WIDTH/2 - 55,10,player.shield)
-    draw_lives(screen, WIDTH/2 - 50, 30, player.lives, player_mini_img)
+    draw_lives(screen, WIDTH/2 - 50, 30, player.lives, lives_img)
 
     pygame.display.flip()
 

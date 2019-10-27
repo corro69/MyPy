@@ -5,7 +5,6 @@ def game_loop():
 
 pygame.init()
 
-
 display_width = 1000
 display_height = 600
 
@@ -34,7 +33,7 @@ for i in range(0, pygame.joystick.get_count()):
     joysticks[-1].init()
 
 pygame.mixer.music.load("random silly chip song.wav")
-#pygame.mixer.music.play(-1)
+pygame.mixer.music.play(-1)
 
 class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, location):
@@ -91,6 +90,20 @@ def game_intro():
 
             if event.type == pygame.JOYBUTTONDOWN:
                 if event.button == 9:
+                    game_loop()
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 8:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 6:
+                    pygame.quit()
+                    quit()
+
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 7:
                     game_loop()
 
         gameDisplay.blit(bg.image, bg.rect)
